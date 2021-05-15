@@ -19,22 +19,6 @@ app.prepare().then(() => {
     const server = new Koa();
     const router = new KoaRouter();
 
-    // We can also add additional properties to context
-    server.context.user = 'Ashish'
-
-    // server.keys = [Shopify.Context.API_SECRET_KEY];
-
-    // server.use(
-    //   createShopifyAuth({
-    //     afterAuth(ctx) {
-    //       const {shop, scope} = ctx.state.shopify;
-    //       ACTIVE_SHOPIFY_SHOPS[shop] = scope;
-
-    //       ctx.redirect(`/?shop=${shop}`);
-    //     },
-    //   }),
-    // );
-
     const handleRequest = async (ctx) => {
         console.log(`Inside handleRequest`);
         await handle(ctx.req, ctx.res);
@@ -44,7 +28,7 @@ app.prepare().then(() => {
 
     // Routes
     router.get('/test', ctx => {
-        ctx.body = `Hello, ${ctx.user}`
+        ctx.body = `Hello, Test`
     });
     router.get('/test/:name', ctx => {
         ctx.body = `Hello, ${ctx.params.name}`
