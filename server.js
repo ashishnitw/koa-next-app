@@ -1,7 +1,7 @@
 const Koa = require('koa');
-const Router = require('@koa/router');
 const next = require('next');
 const dotenv = require("dotenv");
+const router = require('./server/rest/router')
 
 dotenv.config();
 
@@ -13,14 +13,12 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const handle = app.getRequestHandler();
 
 const server = new Koa();
-const router = require('./server/rest/router')
 
 server.use(router.routes()).use(router.allowedMethods());
 
 app.prepare().then(() => {
 
     const handleRequest = async (ctx) => {
-        console.log(`Inside handleRequest`);
         await handle(ctx.req, ctx.res);
         ctx.respond = false;
         ctx.res.statusCode = 200;
