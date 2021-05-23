@@ -1,13 +1,13 @@
-import '../css/style.css'
-import '../css/form.css'
 import Head from 'next/head'
 import Link from 'next/link'
+import '../styles/style.css'
+import '../styles/form.css'
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Pet Care App</title>
+        <title>Sample App</title>
       </Head>
 
       <div className="top-bar">

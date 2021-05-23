@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dbConnect from '../../utils/dbConnect'
-import Pet from '../../models/Pet'
+import Pet from '../../server/models/Pet'
 
 /* Allows you to view pet card info and delete pet card*/
 const PetPage = ({ pet }) => {

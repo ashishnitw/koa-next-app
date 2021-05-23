@@ -1,7 +1,7 @@
 const Koa = require('koa');
 const next = require('next');
 const dotenv = require("dotenv");
-const router = require('./server/rest/router')
+const router = require('./server/routes/router')
 
 dotenv.config();
 

@@ -6,9 +6,9 @@ const axios = require('axios');
 const router = new Router();
 
 // Test Route
-// router.get('/test/:name', ctx => {
-//     ctx.body = `Hello, ${ctx.params.name}`
-// });
+router.get('/test/:name', ctx => {
+    ctx.body = `Hello, ${ctx.params.name}`
+});
 
 router.get('/test', ctx => {
     ctx.body = `Hello, Test`
@@ -16,10 +16,6 @@ router.get('/test', ctx => {
 
 router.get('/test1', ctx => {
     ctx.body = `Hello, Test 1`
-});
-
-router.get('/test2', ctx => {
-    ctx.body = `Hello, Test 2`
 });
 
 module.exports = router;
