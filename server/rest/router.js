@@ -22,5 +22,4 @@ router.get('/test2', ctx => {
     ctx.body = `Hello, Test 2`
 });
 
-
 module.exports = router;

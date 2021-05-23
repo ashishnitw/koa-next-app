@@ -1,54 +1,65 @@
-import Head from 'next/head'
 import Link from 'next/link'
-import Date from '../components/date'
-import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+import dbConnect from '../utils/dbConnect'
+import Pet from '../models/Pet'
 
-export async function getStaticProps() {
-  const allPostsData = getSortedPostsData()
-  return {
-    props: {
-      allPostsData
-    }
-  }
+const Index = ({ pets }) => (
+  <>
+    {/* Create a card for each pet */}
+    {pets.map((pet) => (
+      <div key={pet._id}>
+        <div className="card">
+          <img src={pet.image_url} />
+          <h5 className="pet-name">{pet.name}</h5>
+          <div className="main-content">
+            <p className="pet-name">{pet.name}</p>
+            <p className="owner">Owner: {pet.owner_name}</p>
+
+            {/* Extra Pet Info: Likes and Dislikes */}
+            <div className="likes info">
+              <p className="label">Likes</p>
+              <ul>
+                {pet.likes.map((data, index) => (
+                  <li key={index}>{data} </li>
+                ))}
+              </ul>
+            </div>
+            <div className="dislikes info">
+              <p className="label">Dislikes</p>
+              <ul>
+                {pet.dislikes.map((data, index) => (
+                  <li key={index}>{data} </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="btn-container">
+              <Link href="/[id]/edit" as={`/${pet._id}/edit`}>
+                <button className="btn edit">Edit</button>
+              </Link>
+              <Link href="/[id]" as={`/${pet._id}`}>
+                <button className="btn view">View</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </>
+)
+
+/* Retrieves pet(s) data from mongodb database */
+export async function getServerSideProps() {
+  await dbConnect()
+
+  /* find all the data in our database */
+  const result = await Pet.find({})
+  const pets = result.map((doc) => {
+    const pet = doc.toObject()
+    pet._id = pet._id.toString()
+    return pet
+  })
+
+  return { props: { pets: pets } }
 }
 
-// export async function getServerSideProps(context) {
-//   console.log(`Fetching Data at Request Time`);
-//   return {
-//     props: {
-//       // props for your component
-//     }
-//   }
-// }
-
-export default function Home({ allPostsData }) {
-  return (
-    <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <section className={utilStyles.headingMd}>
-        <p>I believe in living sustainably, healthy and in a minimalist way.</p>
-        <p>Creative expression is what lights me up, and I'm always open to learning about new opportunities.</p>
-      </section>
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
-          {allPostsData.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-            <Link href={`/posts/${id}`}>
-              <a>{title}</a>
-            </Link>
-            <br />
-            <small className={utilStyles.lightText}>
-              <Date dateString={date} />
-            </small>
-          </li>
-          ))}
-        </ul>
-      </section>
-    </Layout>
-  )
-}
+export default Index
